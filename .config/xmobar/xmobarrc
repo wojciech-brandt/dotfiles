@@ -1,12 +1,12 @@
-Config { font = "xft:Droid Sans Mono for Powerline:weight=regular:pixelsize=16:antialias=true:hinting=true"
+Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
        , additionalFonts = []
        , borderColor = "black"
-			 , border = NoBorder
-			 , bgColor = "#282a36"
-       , fgColor = "#44475a"
+       , border = TopB
+       , bgColor = "black"
+       , fgColor = "grey"
        , alpha = 255
-       , position = Static { xpos = 1928 , ypos = 8, width = 1904 , height = 19 }
-       , textOffset = 15
+       , position = Top
+       , textOffset = -1
        , iconOffset = -1
        , lowerOnStart = True
        , pickBroadest = False
@@ -15,7 +15,17 @@ Config { font = "xft:Droid Sans Mono for Powerline:weight=regular:pixelsize=16:a
        , iconRoot = "."
        , allDesktops = True
        , overrideRedirect = True
-       , commands = [ Run Cpu [] 10
+       , commands = [ Run Weather "EGPF" ["-t","<station>: <tempC>C",
+                                          "-L","18","-H","25",
+                                          "--normal","green",
+                                          "--high","red",
+                                          "--low","lightblue"] 36000
+                    , Run Network "eth0" ["-L","0","-H","32",
+                                          "--normal","green","--high","red"] 10
+                    , Run Network "eth1" ["-L","0","-H","32",
+                                          "--normal","green","--high","red"] 10
+                    , Run Cpu ["-L","3","-H","50",
+                               "--normal","green","--high","red"] 10
                     , Run Memory ["-t","Mem: <usedratio>%"] 10
                     , Run Swap [] 10
                     , Run Com "uname" ["-s","-r"] "" 36000
@@ -23,6 +33,6 @@ Config { font = "xft:Droid Sans Mono for Powerline:weight=regular:pixelsize=16:a
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "<fc=#44475a,#ffb86c> </fc><fc=#44475a,#ffb86c>%cpu%</fc><fc=#44475a,#ffb86c> </fc><fc=#ffb86c,#bd93f9></fc><fc=#bd93f9,#bd93f9> </fc><fc=#44475a,#bd93f9>%memory%</fc><fc=#bd93f9,#bd93f9> </fc><fc=#bd93f9,#6272a4></fc><fc=#6272a4,#6272a4> </fc><fc=#f8f8f2,#6272a4>%swap%</fc><fc=#6272a4,#6272a4> </fc><fc=#6272a4></fc> }\
-                    \{  %uname% <fc=#50fa7b></fc><fc=#50fa7b,#50fa7b> </fc><fc=#44475a,#50fa7b>%date%</fc>"
+       , template = "%cpu% | %memory% * %swap% | %eth0% - %eth1% }\
+                    \{ <fc=#ee9a00>%date%</fc>| %EGPF% | %uname%"
        }
