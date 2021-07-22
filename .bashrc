@@ -121,5 +121,5 @@ export EDITOR="/usr/bin/nvim"
 export VISUAL="/usr/bin/nvim"
 
 alias python='python3'
-. "$HOME/.cargo/env"
 alias dotfiles-config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
+. "$HOME/.cargo/env"

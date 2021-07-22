@@ -20,6 +20,7 @@ import XMonad.Hooks.ManageDocks
 -- Utilities
 import XMonad.Util.SpawnOnce ( spawnOnce )
 import XMonad.Util.Run
+import Graphics.X11.ExtraTypes.XF86
 
 -- Layouts
 import XMonad.Layout.ResizableTile
@@ -143,6 +144,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+
+    -- Volume and mute key
+    , ((0 , xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +1.5%")
+    , ((0 , xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -1.5%")
+    , ((0 , xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+    , ((0 , xF86XK_AudioPrev), spawn "playerctl prev")
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))

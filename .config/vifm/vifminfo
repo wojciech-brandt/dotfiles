@@ -17,7 +17,7 @@
 # Bookmarks:
 
 # TUI:
-al
+ar
 q0
 v2
 ov
@@ -87,8 +87,17 @@ d/home/wojciech
 	Downloads
 3
 d/home/wojciech/Downloads
-	fontawesome-free-5.15.3-web.zip
-11
+	..
+0
+d/home/wojciech
+	alacritty
+9
+d/home/wojciech/.config
+	wallpapers
+19
+d/home/wojciech/.config/wallpapers
+	john-towner-JgOeRuGD_Y4-unsplash.jpg
+1
 d
 
 # Right window history (oldest to newest):
@@ -131,27 +140,46 @@ D/home/wojciech
 D/home/wojciech/Documents
 	..
 0
+D/home/wojciech
+	Downloads
+3
+D/home/wojciech/Downloads
+	wallpaper-master.zip
+5
+D/home/wojciech
+	Downloads
+3
+D/home/wojciech/Downloads
+	wallpaper-master.zip
+4
 D
 
 # Command line history (oldest to newest):
 :colorscheme dracula
+:!cd .config
+:cd config
+:cd .confgi
+:cd .config
 :q
 
 # Search history (oldest to newest):
 
 # Prompt history (oldest to newest):
 pMusic
+pjjjDownloads
 
 # Local filter history (oldest to newest):
 
 # Registers:
-""/home/wojciech/.local/share/vifm/Trash/000_xmobarrc0
+""/home/wojciech/.local/share/vifm/Trash/000_john-towner-JgOeRuGD_Y4-unsplash.jpg
 
 # Directory stack (oldest to newest):
 
 # Trash content:
 t/home/wojciech/.local/share/vifm/Trash/000_xmobarrc0
 	/home/wojciech/Documents/xmobarrc0
+t/home/wojciech/.local/share/vifm/Trash/000_john-towner-JgOeRuGD_Y4-unsplash.jpg
+	/home/wojciech/Downloads/john-towner-JgOeRuGD_Y4-unsplash.jpg
 
 # State:
 f
