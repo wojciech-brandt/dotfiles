@@ -9,7 +9,8 @@ endif
 call plug#begin('~/.config/nvim/autoload/plugged')
 
     " File Explorer
-    Plug 'scrooloose/NERDTree'
+    Plug 'kyazdani42/nvim-web-devicons'
+    Plug 'kyazdani42/nvim-tree.lua'
     " Surround
     Plug 'tpope/vim-surround'
     " Gruvbox colorscheme
@@ -46,5 +47,7 @@ call plug#begin('~/.config/nvim/autoload/plugged')
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     " Auto-close braces and scopes
     Plug 'jiangmiao/auto-pairs'
+    " barbar tabline
+    Plug 'romgrk/barbar.nvim'
 
 call plug#end()
