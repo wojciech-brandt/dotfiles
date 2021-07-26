@@ -17,7 +17,7 @@
 # Bookmarks:
 
 # TUI:
-ar
+al
 q0
 v2
 ov
@@ -98,6 +98,30 @@ d/home/wojciech/.config
 d/home/wojciech/.config/wallpapers
 	john-towner-JgOeRuGD_Y4-unsplash.jpg
 1
+d/home/wojciech/.config
+	..
+0
+d/home/wojciech
+	..
+0
+d/home
+	..
+0
+d/
+	media
+11
+d/media
+	wojciech
+1
+d/media/wojciech
+	..
+0
+d/media
+	..
+0
+d/
+	mnt
+12
 d
 
 # Right window history (oldest to newest):
@@ -150,8 +174,8 @@ D/home/wojciech
 	Downloads
 3
 D/home/wojciech/Downloads
-	wallpaper-master.zip
-4
+	fonts
+2
 D
 
 # Command line history (oldest to newest):

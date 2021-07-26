@@ -148,8 +148,13 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Volume and mute key
     , ((0 , xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +1.5%")
     , ((0 , xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -1.5%")
-    , ((0 , xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
-    , ((0 , xF86XK_AudioPrev), spawn "playerctl prev")
+    , ((0 , xF86XK_AudioMute       ), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle")
+    , ((0 , xF86XK_AudioPrev       ), spawn "playerctl prev")
+    , ((0 , xF86XK_AudioNext       ), spawn "playerctl next")
+    , ((0 , xF86XK_AudioPlay       ), spawn "playerctl play-pause")
+
+    -- Take a screenshot
+    , ((0                 , xK_Print  ), spawn "flameshot gui")
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))

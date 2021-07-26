@@ -1,4 +1,4 @@
-Config { font = "xft:Droid Sans Mono:weight=regular:pixelsize=14:antialias=true:hinting=true"
+Config { font = "xft:DroidSansMono Nerd Font:weight=bold:pixelsize=16:antialias=true:hinting=true"
        , additionalFonts = []
        , borderColor = "black"
        , border = TopB
@@ -15,14 +15,9 @@ Config { font = "xft:Droid Sans Mono:weight=regular:pixelsize=14:antialias=true:
        , iconRoot = "."
        , allDesktops = True
        , overrideRedirect = True
-       , commands = [ Run Weather "EGPF" ["-t","<station>: <tempC>C",
-                                          "-L","18","-H","25",
-                                          "--normal","green",
-                                          "--high","red",
-                                          "--low","lightblue"] 36000
-                    , Run Network "eth0" ["-L","0","-H","32",
+       , commands = [ Run Network "enp61s0" ["-L","0","-H","32",
                                           "--normal","green","--high","red"] 10
-                    , Run Network "eth1" ["-L","0","-H","32",
+                    , Run Network "wlp62s0" ["-L","0","-H","32",
                                           "--normal","green","--high","red"] 10
                     , Run Cpu ["-L","3","-H","50",
                                "--normal","green","--high","red"] 10
@@ -30,9 +25,10 @@ Config { font = "xft:Droid Sans Mono:weight=regular:pixelsize=14:antialias=true:
                     , Run Swap [] 10
                     , Run Com "uname" ["-s","-r"] "" 36000
                     , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
-                    ]
+										, Run Alsa "default" "Master" ["-t","<volumebar>"]
+                    ] 
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%cpu% | %memory% * %swap% | %eth0% - %eth1% }\
-                    \{ <fc=#ee9a00>%date%</fc>| %EGPF% | %uname%"
+       , template = "%cpu% | %memory% * %swap% | %enp61s0% - %wlp62s0% | %alsa:default:Master%}\
+                    \{ <fc=#ee9a00>%date%</fc> | %uname%"
        }

@@ -117,9 +117,11 @@ if ! shopt -oq posix; then
 fi
 
 # set default editor to nvim
-export EDITOR="/usr/bin/nvim"
-export VISUAL="/usr/bin/nvim"
+export EDITOR="/usr/local/bin/nvim"
+export VISUAL="/usr/local/bin/nvim"
 
 alias python='python3'
 alias dotfiles-config='/usr/bin/git --git-dir=$HOME/dotfiles --work-tree=$HOME'
 . "$HOME/.cargo/env"
+
+# adding folders to PATH
