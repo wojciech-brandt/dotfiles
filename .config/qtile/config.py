@@ -1,39 +1,17 @@
-# Copyright (c) 2010 Aldo Cortesi
-# Copyright (c) 2010, 2014 dequis
-# Copyright (c) 2012 Randall Ma
-# Copyright (c) 2012-2014 Tycho Andersen
-# Copyright (c) 2012 Craig Barnes
-# Copyright (c) 2013 horsik
-# Copyright (c) 2013 Tao Sauvage
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-
+# IMPORTS
 from typing import List  # noqa: F401
 
-from libqtile import bar, layout, widget
+import os, subprocess
+from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
-mod = "mod4"
-terminal = guess_terminal()
+# BASIC SETTINGS 
+mod = "mod4" 
+terminal = guess_terminal() 
 
+# KEYBIDINGS
 keys = [
     # Switch between windows
     Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
@@ -72,14 +50,39 @@ keys = [
         desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
 
-    # Toggle between different layouts as defined below
+    # Toggle between different layouts as defined below,
     Key([mod], "space", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod, "shift"], "c", lazy.window.kill(), desc="Kill focused window"),
 
+    # Pushing focused window to tiling / to floating
+    Key([mod], "t", lazy.window.toggle_floating(), 
+        desc="Put the focused window to/from floating mode"),
+
+    # Volume and player controls 
+    Key([], "XF86AudioRaiseVolume", 
+        lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +1.5%")),
+    Key([], "XF86AudioLowerVolume", 
+        lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -1.5%")),
+    Key([], "XF86AudioMute", 
+        lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")),
+    Key([], "XF86AudioPrev", 
+        lazy.spawn("playerctl prev")),
+    Key([], "XF86AudioNext", 
+        lazy.spawn("playerctl next")),
+    Key([], "XF86AudioPlay", 
+        lazy.spawn("playerctl play-pause")),
+
+    # Laptop brightness keys
+    Key([], "XF86MonBrightnessUp", lazy.spawn("brightnessctl s +10%")),
+    Key([], "XF86MonBrightnessDown", lazy.spawn("brightnessctl s 10%-")),
+
+    # Printscreen functionality with flameshot
+    Key([], "Print", lazy.spawn("flameshot gui")),
+
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(),
-        desc="Spawn a command using a prompt widget"),
+    Key([mod], "p", lazy.spawn("dmenu_run"),
+        desc="Spawn dmenu"),
 ]
 
 groups = [Group(i) for i in "123456789"]
@@ -91,16 +94,24 @@ for i in groups:
             desc="Switch to group {}".format(i.name)),
 
         # mod1 + shift + letter of group = switch to & move focused window to group
-        Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
-            desc="Switch to & move focused window to group {}".format(i.name)),
+        # Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=True),
+        #     desc="Switch to & move focused window to group {}".format(i.name)),
         # Or, use below if you prefer not to switch to that group.
-        # # mod1 + shift + letter of group = move focused window to group
-        # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-        #     desc="move focused window to group {}".format(i.name)),
+        # mod1 + shift + letter of group = move focused window to group
+        Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
+            desc="move focused window to group {}".format(i.name)),
     ])
 
+# LAYOUTS
 layouts = [
-    layout.Columns(border_focus_stack=['#d75f5f', '#8f3d3d'], border_width=4),
+    # layout.Columns(border_focus_stack=['#ff79c6', '#ff92d0'], border_width=2),
+    layout.Columns(border_focus        = '#bd93f9',
+                   border_normal       = '#282a36',
+                   border_focus_stack  = '#ff79c6',
+                   border_normal_stack = '#8c486f',
+                   border_width        = 3,
+                   margin              = 6,
+                   ),
     layout.Max(),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
@@ -115,36 +126,107 @@ layouts = [
     # layout.Zoomy(),
 ]
 
+# WIDGETS
 widget_defaults = dict(
-    font='sans',
-    fontsize=12,
+    font='DroidSansMono Nerd Font',
+    fontsize=16,
     padding=3,
 )
 extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        bottom=bar.Bar(
+        top=bar.Bar(
             [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(),
-                widget.Chord(
-                    chords_colors={
-                        'launch': ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
+                widget.CurrentLayoutIcon(scale=0.8),
+                widget.GroupBox(
+                    rounded = False,
+                    active = '#f8f8f2',
+                    borderwidth = 4,
+                    disable_drag = True,
+                    fontsize = 16,
+                    this_current_screen_border = '#ff79c6',
+                    other_current_screen_border = '#6272a4',
+                    other_screen_border = '#44475a',
+                    this_screen_border = '#bd93f9',
                 ),
-                widget.TextBox("default config", name="default"),
-                widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
-                widget.Systray(),
-                widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
-                widget.QuickExit(),
+                widget.Sep(
+                    linewidth = 0,
+                    padding   = 6,
+                ),
+                widget.TextBox(
+                    text='',
+                    font = 'DroidSansMono Nerd Font',
+                    foreground = '#ff79c6',
+                    padding = 6,
+                    fontsize = 18,
+                ),
+                widget.CPUGraph(
+                    border_color = '#ff79c6',
+                    fill_color = '#8f3d6c',
+                    graph_color = '#ff79c6',
+                ),
+                widget.Sep(
+                    linewidth = 0,
+                    padding   = 6,
+                ),
+                widget.TextBox(
+                    text='',
+                    font = 'DroidSansMono Nerd Font',
+                    foreground = '#50fa7b',
+                    padding = 6,
+                    fontsize = 20,
+                ),
+                widget.MemoryGraph(
+                    border_color = '#50fa7b',
+                    fill_color = '#146328',
+                    graph_color = '#50fa7b',
+                ),
+                widget.Sep(
+                    linewidth = 0,
+                    padding   = 6,
+                ),
+                widget.TextBox(
+                    text='ﯲ',
+                    font = 'DroidSansMono Nerd Font',
+                    foreground = '#8be9fd',
+                    padding = 6,
+                    fontsize = 20,
+                ),
+                widget.NetGraph(
+                    border_color = '#8be9fd',
+                    fill_color = '#357987',
+                    graph_color = '#8be9fd',),
+                #widget.WindowName(),
+                widget.Spacer(length=bar.STRETCH), 
+                widget.Clock(format='%d-%m-%Y %a %H:%M'),
             ],
-            24,
+            26,
+            background='#282a36',
         ),
     ),
+    Screen(
+        top=bar.Bar(
+            [
+                widget.CurrentLayoutIcon(scale=0.8),
+                widget.GroupBox(
+                    rounded = False,
+                    active = '#f8f8f2',
+                    borderwidth = 4,
+                    disable_drag = True,
+                    fontsize = 16,
+                    this_current_screen_border = '#ff79c6',
+                    other_current_screen_border = '#6272a4',
+                    other_screen_border = '#44475a',
+                    this_screen_border = '#bd93f9',
+                ),
+                widget.Spacer(length=bar.STRETCH), 
+                widget.Clock(format='%d-%m-%Y %a %H:%M'),
+            ],
+            26,
+            background='#282a36',
+        ),
+    )
 ]
 
 # Drag floating layouts.
@@ -170,7 +252,11 @@ floating_layout = layout.Floating(float_rules=[
     Match(wm_class='ssh-askpass'),  # ssh-askpass
     Match(title='branchdialog'),  # gitk
     Match(title='pinentry'),  # GPG key password entry
-])
+    ],
+    border_focus        = '#8be9fd',
+    border_normal       = '#282a36',
+    border_width        = 3,
+)
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
@@ -178,6 +264,12 @@ reconfigure_screens = True
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
 auto_minimize = True
+
+# AUTOSTART
+@hook.subscribe.startup_once
+def start_one():
+    home = os.path.expanduser('~/.config/qtile/autostart.sh')
+    subprocess.call([home])
 
 # XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
 # string besides java UI toolkits; you can see several discussions on the
