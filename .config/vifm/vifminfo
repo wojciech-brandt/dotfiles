@@ -17,7 +17,7 @@
 # Bookmarks:
 
 # TUI:
-al
+ar
 q0
 v2
 ov
@@ -120,7 +120,16 @@ d/media
 	..
 0
 d/
-	mnt
+	home
+4
+d/home
+	wojciech
+1
+d/home/wojciech
+	Downloads
+3
+d/home/wojciech/Downloads
+	Headphones.preset
 12
 d
 
@@ -174,8 +183,26 @@ D/home/wojciech
 	Downloads
 3
 D/home/wojciech/Downloads
-	fonts
-2
+	c2hs-0.28.8
+3
+D/home/wojciech
+	Public
+7
+D/home/wojciech/Public
+	..
+0
+D/home/wojciech
+	.config
+4
+D/home/wojciech/.config
+	pulse
+8
+D/home/wojciech/.config/pulse
+	presets
+1
+D/home/wojciech/.config/pulse/presets
+	Headphones.preset
+1
 D
 
 # Command line history (oldest to newest):
@@ -187,15 +214,18 @@ D
 :q
 
 # Search history (oldest to newest):
+/Download
+/head
 
 # Prompt history (oldest to newest):
-pMusic
 pjjjDownloads
+pMusic
+pPublic
 
 # Local filter history (oldest to newest):
 
 # Registers:
-""/home/wojciech/.local/share/vifm/Trash/000_john-towner-JgOeRuGD_Y4-unsplash.jpg
+""/home/wojciech/Downloads/Headphones.preset
 
 # Directory stack (oldest to newest):
 
@@ -208,10 +238,10 @@ t/home/wojciech/.local/share/vifm/Trash/000_john-towner-JgOeRuGD_Y4-unsplash.jpg
 # State:
 f
 i1
-[.1
+[.0
 [F
 F
 I1
-].1
+].0
 ]F
 s0

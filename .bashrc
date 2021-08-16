@@ -116,6 +116,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# bindings
+bind TAB:menu-complete
+
 # set default editor to nvim
 export EDITOR="/usr/local/bin/nvim"
 export VISUAL="/usr/local/bin/nvim"
